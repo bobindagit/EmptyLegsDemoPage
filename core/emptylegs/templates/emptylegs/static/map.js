@@ -1,4 +1,4 @@
-var map = L.map('map').setView([0,0], 2);
+var map = L.map('map', {scrollWheelZoom: false}).setView([0,0], 2);
 var mapbox_token = JSON.parse(document.getElementById('MAPBOX_TOKEN').textContent)['token'];
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapbox_token, {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -8,6 +8,9 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     zoomOffset: -1,
     accessToken: mapbox_token
 }).addTo(map);
+
+map.on('focus', function() { map.scrollWheelZoom.enable(); });
+map.on('blur', function() { map.scrollWheelZoom.disable(); });
 
 var data = JSON.parse(document.getElementById('markers').textContent);
 L.geoJSON(data).bindPopup(function (layer) { return layer.feature.properties.name; }).addTo(map).on('click', markerOnClick);
