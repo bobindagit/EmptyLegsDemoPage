@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  web:
+    platform: linux/amd64
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    env_file: .env
+    volumes:
+      - web-django:/working/EmptyLegsDemoPage
+      - web-static:/working/EmptyLegsDemoPage/static
+    depends_on:
+      - redis_service
+
+  redis_service:
+    image: redis:latest
+    restart: always
+    expose:
+      - '6379'
+    ports:
+      - '6379:6379'
+
+volumes:
+  web-django:
+  web-static:

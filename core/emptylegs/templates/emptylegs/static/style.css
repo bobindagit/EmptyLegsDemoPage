@@ -1,0 +1,23 @@
+html,
+body {
+    height: 100%;
+    margin: 5
+}
+#map {
+    text-align: center;
+    height: 100%;
+    width: 95%;
+    margin: auto;
+}
+#filters {
+    text-align: center;
+    margin: 10px;
+}
+table {
+    margin-top: 25px;
+    text-align: center;
+    margin: auto;
+}
+table th, td {
+    text-align: center;
+}

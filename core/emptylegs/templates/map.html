@@ -1,0 +1,41 @@
+{% load static %}
+{% load django_tables2 %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Open Street Map (Empty Legs)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="icon" href="{% static '/img/favicon.png' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    </head>
+    <body>
+        <div id="map">
+            {{ MAPBOX_TOKEN|json_script:"MAPBOX_TOKEN" }}
+            {{ markers|json_script:"markers" }}
+        </div>
+        <script src="{% static 'map.js' %}"></script>
+        <div id="filters">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div style="margin: 10px;">
+                    {{ form.filter_date.label }} {{ form.filter_date }}
+                    {{ form.filter_company.label }} {{ form.filter_company }}
+                    {{ form.filter_aircraft.label }} {{ form.filter_aircraft }}
+                </div>
+                <div style="margin: 10px;">
+                    {{ form.filter_departure_airport.label }} {{ form.filter_departure_airport }}
+                    {{ form.filter_arrival_airport.label }} {{ form.filter_arrival_airport }}
+                </div>
+                <input type="image" height=40 width=200 style='vertical-align: bottom; margin-left: 5px' src="{% static '/img/search.png' %}">
+            </form>
+        </div>
+        {% render_table emptylegs_table %}
+    </body>
+</html>
