@@ -92,7 +92,7 @@ class MarkersMapView(View):
                         arrivals.append([[location_lat, location_lon], [value.get('location_to_lat'), value.get('location_to_lon')]])
 
             if marker_name:
-                features.append(self.serialize_marker(marker_name.strip(), location_lon, location_lat, arrivals))
+                features.append(self.serialize_marker(marker_name.strip(), value.get('dep_airport_icao'), location_lon, location_lat, arrivals))
         
         emptylegs_table = EmptyLegsTable(availabilities)
         
@@ -126,10 +126,10 @@ class MarkersMapView(View):
         return True
     
     @staticmethod
-    def serialize_marker(name: str, location_lon: float, location_lat: float, arrivals: list) -> dict:
+    def serialize_marker(name: str, header: str, location_lon: float, location_lat: float, arrivals: list) -> dict:
         return {
             "type": "Feature",
-            "properties": {"name": name, 'arrivals': arrivals},
+            "properties": {"name": name, 'arrivals': arrivals, 'header': header},
             "geometry": {
                 "type": "Point",
                 "coordinates": list([location_lon, location_lat])

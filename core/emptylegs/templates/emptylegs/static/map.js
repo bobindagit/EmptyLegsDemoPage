@@ -12,8 +12,18 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 map.on('focus', function() { map.scrollWheelZoom.enable(); });
 map.on('blur', function() { map.scrollWheelZoom.disable(); });
 
+// Markers
 var data = JSON.parse(document.getElementById('markers').textContent);
-L.geoJSON(data).bindPopup(function (layer) { return layer.feature.properties.name; }).addTo(map).on('click', markerOnClick);
+L.geoJSON(data, {
+    pointToLayer: function(feature, latlng) {
+        return L.marker(latlng, {
+            icon: new L.DivIcon({
+                className: 'divIcon',
+                html: '<div id="iconHeader" style="background-color: #333; white-space: pre-wrap; color: rgb(255, 255, 255); line-height: 110%; font-size: 9px; font-weight: bold; width: 35px; height: 15px; text-align: center; padding: 3px;">' + feature.properties.header + '</div>'
+            })
+        })
+    }
+}).bindPopup(function (layer) { return layer.feature.properties.name; }).addTo(map).on('click', markerOnClick);
 
 var polylines = [];
 
